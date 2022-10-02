@@ -1,38 +1,38 @@
 name: Deploy Hexo To GitHub Page
-on:
-push:
- branches:
-   - main
-jobs:
-build:
- runs-on: ubuntu-latest
 
- steps:
-    - name: Checkout source
-      uses: actions/checkout@v3
-      with:
-        ref: main
-    - name: Use Node.js ${{ matrix.node_version }}
-      uses: actions/setup-node@v1
-      with:
-        version: ${{ matrix.node_version }}
-    - name: Setup hexo
-      env:
-        ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_SECRET }}
-      run: |
-        mkdir -p ~/.ssh/
-        echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-        git config --global user.email "98920806+black3babe@users.noreply.github.com"
-        git config --global user.name "black3babe"
-        npm install -g hexo-cli
-        npm install -g hexo
-        npm install
-    - name: Hexo deploy
-      run: |
-        hexo clean
-        hexo d
-    - name: Clean SSH
-      run: |
-        rm -fr ~/.ssh/id_rsa
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          version: ${{ matrix.node_version }}
+      - name: Setup hexo
+        env:
+          ACTION_DEPLOY_KEY: ${{ secrets.DEPLOY_SECRET }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global user.email "98920806+black3babe@users.noreply.github.com"
+          git config --global user.name "black3babe"
+          npm install -g hexo-cli
+          npm install -g hexo
+          npm install
+      - name: Hexo deploy
+        run: |
+          hexo clean
+          hexo d
+      - name: Clean SSH
+        run: |
+          rm -fr ~/.ssh/id_rsa
