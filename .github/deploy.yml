@@ -29,6 +29,7 @@ jobs:
           npm install -g hexo-cli
           npm install -g hexo
           npm install
+          npm install --save hexo-theme-fluid
       - name: Hexo deploy
         run: |
           hexo clean
